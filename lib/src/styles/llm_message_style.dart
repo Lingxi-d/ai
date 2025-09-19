@@ -19,6 +19,7 @@ class LlmMessageStyle {
     this.iconDecoration,
     this.decoration,
     this.markdownStyle,
+    this.onTapLink,
   });
 
   /// Resolves the provided style with the default style.
@@ -47,6 +48,7 @@ class LlmMessageStyle {
       iconDecoration: style?.iconDecoration ?? defaultStyle.iconDecoration,
       markdownStyle: style?.markdownStyle ?? defaultStyle.markdownStyle,
       decoration: style?.decoration ?? defaultStyle.decoration,
+      onTapLink: style?.onTapLink,
     );
   }
 
@@ -107,4 +109,7 @@ class LlmMessageStyle {
 
   /// The markdown style sheet for LLM messages.
   final MarkdownStyleSheet? markdownStyle;
+
+  /// 点击链接
+  final void Function(String? text, String? href, String? title)? onTapLink;
 }

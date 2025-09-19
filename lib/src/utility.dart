@@ -3,10 +3,12 @@
 // found in the LICENSE file.
 
 import 'package:flutter/cupertino.dart' show BuildContext, CupertinoApp;
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 import 'dialogs/adaptive_snack_bar/adaptive_snack_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 bool? _isCupertinoApp;
 
@@ -53,7 +55,7 @@ final isMobile = UniversalPlatform.isAndroid || UniversalPlatform.isIOS;
 Future<void> copyToClipboard(BuildContext context, String text) async {
   await Clipboard.setData(ClipboardData(text: text));
   if (context.mounted) {
-    AdaptiveSnackBar.show(context, 'Message copied to clipboard');
+    '已复制到粘贴板'.toast();
   }
 }
 
@@ -75,3 +77,28 @@ Color? invertColor(Color? color) =>
           blue: 1 - color.b,
         )
         : null;
+
+extension ToastExt on String {
+  void toast({
+    double? fontSize,
+    ToastGravity? gravity,
+    Color? backgroundColor,
+    Color? textColor,
+  }) {
+    if (isEmpty) {
+      return;
+    }
+    Fluttertoast.showToast(
+      msg: this,
+      gravity: gravity ?? ToastGravity.CENTER,
+      backgroundColor: backgroundColor ?? Colors.black54,
+      textColor: textColor ?? Colors.white,
+      fontSize: fontSize ?? 16.0,
+    );
+  }
+
+  ///复制到粘贴版
+  Future<void> copy2Clipboard() {
+    return Clipboard.setData(ClipboardData(text: this));
+  }
+}

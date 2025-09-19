@@ -68,8 +68,8 @@ class TextOrAudioInput extends StatelessWidget {
         padding: EdgeInsets.only(
           left: 16,
           right: 16,
-          top: _onCancelEdit != null ? 24 : 8,
-          bottom: 8,
+          top: _onCancelEdit != null ? 24 : 4,
+          bottom: 4,
         ),
         child: DecoratedBox(
           decoration: _inputStyle.decoration!,

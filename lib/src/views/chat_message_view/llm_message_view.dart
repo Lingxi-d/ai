@@ -50,10 +50,10 @@ class LlmMessageView extends StatelessWidget {
                 return Stack(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.only(top: 5),
                       child: Container(
-                        height: 20,
-                        width: 20,
+                        height: 30,
+                        width: 30,
                         decoration: llmStyle.iconDecoration,
                         child: Icon(
                           llmStyle.icon,
@@ -68,8 +68,8 @@ class LlmMessageView extends StatelessWidget {
                       clipboardText: text,
                       child: Container(
                         decoration: llmStyle.decoration,
-                        margin: const EdgeInsets.only(left: 28),
-                        padding: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.only(left: 38),
+                        padding: const EdgeInsets.all(10),
                         child:
                             text == null
                                 ? SizedBox(
@@ -86,8 +86,15 @@ class LlmMessageView extends StatelessWidget {
                                       isWelcomeMessage ||
                                               viewModel.responseBuilder == null
                                           ? MarkdownBody(
-                                            data: text,
+                                            data: convertLinksToMarkdown(text),
                                             selectable: false,
+                                            onTapLink: (text, href, title) {
+                                              llmStyle.onTapLink?.call(
+                                                text,
+                                                href,
+                                                title,
+                                              );
+                                            },
                                             styleSheet: llmStyle.markdownStyle,
                                           )
                                           : viewModel.responseBuilder!(
@@ -104,7 +111,15 @@ class LlmMessageView extends StatelessWidget {
           ],
         ),
       ),
-      const Flexible(flex: 2, child: SizedBox()),
+      const Flexible(flex: 1, child: SizedBox()),
     ],
   );
+
+  String convertLinksToMarkdown(String text) {
+    final urlRegex = RegExp(r'(https?:\/\/[^\s]+)');
+    return text.replaceAllMapped(urlRegex, (match) {
+      final url = match.group(0);
+      return '[${url}](${url})';
+    });
+  }
 }

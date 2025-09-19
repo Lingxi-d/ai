@@ -158,60 +158,62 @@ class _ChatInputState extends State<ChatInput> {
   @override
   Widget build(BuildContext context) => Container(
     color: _inputStyle!.backgroundColor,
-    padding: const EdgeInsets.all(16),
-    child: Column(
-      children: [
-        AttachmentsView(
-          attachments: _attachments,
-          onRemove: onRemoveAttachment,
-        ),
-        if (_attachments.isNotEmpty) const SizedBox(height: 6),
-        ValueListenableBuilder(
-          valueListenable: _textController,
-          builder:
-              (context, value, child) => ListenableBuilder(
-                listenable: _waveController,
-                builder:
-                    (context, child) => Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        if (_viewModel!.enableAttachments)
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 14),
-                            child: AttachmentActionBar(
-                              onAttachments: onAttachments,
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+    child: SafeArea(
+      child: Column(
+        children: [
+          AttachmentsView(
+            attachments: _attachments,
+            onRemove: onRemoveAttachment,
+          ),
+          if (_attachments.isNotEmpty) const SizedBox(height: 6),
+          ValueListenableBuilder(
+            valueListenable: _textController,
+            builder:
+                (context, value, child) => ListenableBuilder(
+                  listenable: _waveController,
+                  builder:
+                      (context, child) => Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          if (_viewModel!.enableAttachments)
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 14),
+                              child: AttachmentActionBar(
+                                onAttachments: onAttachments,
+                              ),
+                            ),
+                          Expanded(
+                            child: TextOrAudioInput(
+                              inputStyle: _inputStyle!,
+                              waveController: _waveController,
+                              onCancelEdit: widget.onCancelEdit,
+                              onRecordingStopped: onRecordingStopped,
+                              onSubmitPrompt: onSubmitPrompt,
+                              textController: _textController,
+                              focusNode: _focusNode,
+                              autofocus: widget.autofocus,
+                              inputState: _inputState,
+                              cancelButtonStyle: _chatStyle!.cancelButtonStyle!,
                             ),
                           ),
-                        Expanded(
-                          child: TextOrAudioInput(
-                            inputStyle: _inputStyle!,
-                            waveController: _waveController,
-                            onCancelEdit: widget.onCancelEdit,
-                            onRecordingStopped: onRecordingStopped,
-                            onSubmitPrompt: onSubmitPrompt,
-                            textController: _textController,
-                            focusNode: _focusNode,
-                            autofocus: widget.autofocus,
-                            inputState: _inputState,
-                            cancelButtonStyle: _chatStyle!.cancelButtonStyle!,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: InputButton(
+                              inputState: _inputState,
+                              chatStyle: _chatStyle!,
+                              onSubmitPrompt: onSubmitPrompt,
+                              onCancelPrompt: onCancelPrompt,
+                              onStartRecording: onStartRecording,
+                              onStopRecording: onStopRecording,
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 14),
-                          child: InputButton(
-                            inputState: _inputState,
-                            chatStyle: _chatStyle!,
-                            onSubmitPrompt: onSubmitPrompt,
-                            onCancelPrompt: onCancelPrompt,
-                            onStartRecording: onStartRecording,
-                            onStopRecording: onStopRecording,
-                          ),
-                        ),
-                      ],
-                    ),
-              ),
-        ),
-      ],
+                        ],
+                      ),
+                ),
+          ),
+        ],
+      ),
     ),
   );
 

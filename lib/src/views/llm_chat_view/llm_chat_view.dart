@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_ai_toolkit/src/utility.dart';
 
 import '../../chat_view_model/chat_view_model.dart';
 import '../../chat_view_model/chat_view_model_provider.dart';
@@ -373,7 +374,8 @@ class _LlmChatViewState extends State<LlmChatView>
         if (widget.onCancelCallback != null) {
           widget.onCancelCallback!(context);
         } else {
-          AdaptiveSnackBar.show(context, 'LLM operation canceled by user');
+          // AdaptiveSnackBar.show(context, 'LLM operation canceled by user');
+          "用户已取消".toast();
         }
         break;
       case LlmFailureException():
